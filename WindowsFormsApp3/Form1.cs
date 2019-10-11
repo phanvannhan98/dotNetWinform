@@ -46,26 +46,32 @@ namespace WindowsFormsApp3
 
         private void btnPrev_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
             currentNum--;
             if (currentNum < 0)
             {
                 currentNum = folderImages.ToArray().Length-1;
             }
             picMain.Image = Image.FromFile(folderImages.ToArray()[currentNum]);
-            timer1.Start();
+            if (!isPause)
+            {
+                timer1.Stop();
+                timer1.Start();
+            }
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
             currentNum++;
             if (currentNum >= folderImages.ToArray().Length)
             {
                 currentNum = 0;
             }
             picMain.Image = Image.FromFile(folderImages.ToArray()[currentNum]);
-            timer1.Start();
+            if (!isPause)
+            {
+                timer1.Stop();
+                timer1.Start();
+            }
         }
 
         private void btnPause_Click(object sender, EventArgs e)
