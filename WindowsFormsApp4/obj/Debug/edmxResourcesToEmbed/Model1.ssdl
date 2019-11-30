@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Ql_SinhVienModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="MonHoc">
+    <Key>
+      <PropertyRef Name="idmonhoc" />
+    </Key>
+    <Property Name="idmonhoc" Type="int" Nullable="false" />
+    <Property Name="tenmonhoc" Type="nvarchar" MaxLength="50" />
+    <Property Name="nhom" Type="int" />
+  </EntityType>
+  <EntityType Name="NganhHoc">
+    <Key>
+      <PropertyRef Name="idnganhhoc" />
+    </Key>
+    <Property Name="idnganhhoc" Type="int" Nullable="false" />
+    <Property Name="tennganhhoc" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="QuaTrinhHocTap">
+    <Key>
+      <PropertyRef Name="idSinhVien" />
+      <PropertyRef Name="idMonHoc" />
+    </Key>
+    <Property Name="idSinhVien" Type="int" Nullable="false" />
+    <Property Name="idMonHoc" Type="int" Nullable="false" />
+    <Property Name="Diem" Type="float" />
+  </EntityType>
+  <EntityType Name="SinhVien">
+    <Key>
+      <PropertyRef Name="idSinhVien" />
+    </Key>
+    <Property Name="idSinhVien" Type="int" Nullable="false" />
+    <Property Name="hoten" Type="nvarchar" MaxLength="50" />
+    <Property Name="ngaysinh" Type="smalldatetime" />
+    <Property Name="gioitinh" Type="bit" />
+    <Property Name="nganhhoc" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_MonHoc_NhomMonHoc">
+    <End Role="NganhHoc" Type="Self.NganhHoc" Multiplicity="0..1" />
+    <End Role="MonHoc" Type="Self.MonHoc" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NganhHoc">
+        <PropertyRef Name="idnganhhoc" />
+      </Principal>
+      <Dependent Role="MonHoc">
+        <PropertyRef Name="nhom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_QuaTrinhHocTap_MonHoc">
+    <End Role="MonHoc" Type="Self.MonHoc" Multiplicity="1" />
+    <End Role="QuaTrinhHocTap" Type="Self.QuaTrinhHocTap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MonHoc">
+        <PropertyRef Name="idmonhoc" />
+      </Principal>
+      <Dependent Role="QuaTrinhHocTap">
+        <PropertyRef Name="idMonHoc" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_QuaTrinhHocTap_SinhVien">
+    <End Role="SinhVien" Type="Self.SinhVien" Multiplicity="1" />
+    <End Role="QuaTrinhHocTap" Type="Self.QuaTrinhHocTap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SinhVien">
+        <PropertyRef Name="idSinhVien" />
+      </Principal>
+      <Dependent Role="QuaTrinhHocTap">
+        <PropertyRef Name="idSinhVien" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SinhVien_NganhHoc">
+    <End Role="NganhHoc" Type="Self.NganhHoc" Multiplicity="0..1" />
+    <End Role="SinhVien" Type="Self.SinhVien" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NganhHoc">
+        <PropertyRef Name="idnganhhoc" />
+      </Principal>
+      <Dependent Role="SinhVien">
+        <PropertyRef Name="nganhhoc" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Ql_SinhVienModelStoreContainer">
+    <EntitySet Name="MonHoc" EntityType="Self.MonHoc" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NganhHoc" EntityType="Self.NganhHoc" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QuaTrinhHocTap" EntityType="Self.QuaTrinhHocTap" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SinhVien" EntityType="Self.SinhVien" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_MonHoc_NhomMonHoc" Association="Self.FK_MonHoc_NhomMonHoc">
+      <End Role="NganhHoc" EntitySet="NganhHoc" />
+      <End Role="MonHoc" EntitySet="MonHoc" />
+    </AssociationSet>
+    <AssociationSet Name="FK_QuaTrinhHocTap_MonHoc" Association="Self.FK_QuaTrinhHocTap_MonHoc">
+      <End Role="MonHoc" EntitySet="MonHoc" />
+      <End Role="QuaTrinhHocTap" EntitySet="QuaTrinhHocTap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_QuaTrinhHocTap_SinhVien" Association="Self.FK_QuaTrinhHocTap_SinhVien">
+      <End Role="SinhVien" EntitySet="SinhVien" />
+      <End Role="QuaTrinhHocTap" EntitySet="QuaTrinhHocTap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SinhVien_NganhHoc" Association="Self.FK_SinhVien_NganhHoc">
+      <End Role="NganhHoc" EntitySet="NganhHoc" />
+      <End Role="SinhVien" EntitySet="SinhVien" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
